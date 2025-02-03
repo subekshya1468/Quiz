@@ -1,4 +1,4 @@
-*{
+* {
     font-family: poppins;
 }
 
@@ -14,11 +14,11 @@ body {
 
 .quiz-section {
     background-color: #ffffff;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
 }
 
 #quiz {
@@ -50,6 +50,11 @@ li {
     padding: 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+li.selected {
+    background-color: #cce5ff;
 }
 
 li:hover {
@@ -83,4 +88,14 @@ button#submit {
 
 button#submit:hover {
     background-color: #063a71;
+}
+
+#results-section {
+    margin-top: 20px;
+}
+
+#detailed-results {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 20px;
 }
