@@ -1,12 +1,14 @@
-// script.js
 const quizContainer = document.getElementById('quiz');
 const questionElement = document.getElementById('question');
-const optionsList = document.querySelector('ul');
+const optionsList = document.getElementById('options-list');
 const submitButton = document.getElementById('submit');
+const resultsSection = document.getElementById('results-section');
+const resultsSummary = document.getElementById('results-summary');
+const detailedResults = document.getElementById('detailed-results');
 
 let currentQuestionIndex = 0;
 let score = 0;
-
+let userAnswers = [];
 
 const questions = [
   {
@@ -82,6 +84,13 @@ function loadQuestion() {
       <input type="radio" name="answer" class="answer" id="option-${index}" value="${option}">
       <label for="option-${index}">${option}</label>
     `;
+    li.addEventListener('click', () => {
+      document.getElementById(`option-${index}`).checked = true;
+      li.classList.add('selected');
+      Array.from(optionsList.children).forEach(child => {
+        if (child !== li) child.classList.remove('selected');
+      });
+    });
     optionsList.appendChild(li);
   });
 }
@@ -91,6 +100,12 @@ function checkAnswer() {
   if (selectedOption) {
     const userAnswer = selectedOption.value;
     const correctAnswer = questions[currentQuestionIndex].answer;
+
+    userAnswers.push({
+      question: questions[currentQuestionIndex].question,
+      userAnswer: userAnswer,
+      correctAnswer: correctAnswer
+    });
 
     if (userAnswer === correctAnswer) {
       score++;
@@ -107,17 +122,21 @@ function checkAnswer() {
   }
 }
 
-
 function showResults() {
-  quizContainer.innerHTML = `
-    <h2>Quiz Results</h2>
-    <p>You scored ${score} out of ${questions.length}!</p>
-    <button onclick="location.reload()">Retake Quiz</button>
-  `;
+  quizContainer.style.display = 'none';
+  resultsSection.style.display = 'block';
+
+  resultsSummary.textContent = `You scored ${score} out of ${questions.length}!`;
+
+  detailedResults.innerHTML = userAnswers.map((answer, index) => `
+    <div class="result-item">
+      <h3>Question ${index + 1}: ${answer.question}</h3>
+      <p>Your Answer: ${answer.userAnswer}</p>
+      <p>Correct Answer: ${answer.correctAnswer}</p>
+    </div>
+  `).join('');
 }
 
-
 submitButton.addEventListener('click', checkAnswer);
-
 
 loadQuestion();
